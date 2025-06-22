@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from .. import database, schemas, crud
+from .. import database, schemas, crud,models
+
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 
@@ -40,3 +41,12 @@ def search(query: str, db: Session = Depends(get_db)):
 @router.get("/filter/status/{status}", response_model=list[schemas.OrderOut])
 def filter_by_status(status: str, db: Session = Depends(get_db)):
     return crud.filter_orders_by_status(db, status)
+
+@router.delete("/{order_id}")
+def delete_order(order_id: int, db: Session = Depends(get_db)):
+    order = db.query(models.Order).filter(models.Order.id == order_id).first()
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    db.delete(order)
+    db.commit()
+    return {"message": "Order deleted successfully"}
