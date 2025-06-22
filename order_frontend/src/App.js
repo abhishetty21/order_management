@@ -1,23 +1,16 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-import loginpage from './pages/loginpage';
-import orderspage from './pages/orderspage';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import './styles.css';
 
 function App() {
-  const token = localStorage.getItem('token');
-
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<loginpage />} />
-        <Route
-          path="/orders"
-          element={token ? <orderspage /> : <Navigate to="/login" replace />}
-        />
-        <Route path="*" element={<Navigate to={token ? "/orders" : "/login"} replace />} />
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
 
