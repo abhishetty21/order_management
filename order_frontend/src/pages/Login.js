@@ -1,49 +1,25 @@
-import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/api';
-import '../styles/loginpage.css';
+import { useEffect } from 'react';
 
-function LoginPage() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+const Login = () => {
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await login(username, password);
-      localStorage.setItem('token', res.token);
-      navigate('/orders');
-    } catch (err) {
-      setError('Invalid credentials');
-    }
-  };
+  useEffect(() => {
+    // Auto-login on load for demo
+    localStorage.setItem('username', 'demoUser');
+    navigate('/dashboard');
+  }, []);
 
   return (
-    <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        {error && <p className="error">{error}</p>}
-        <button type="submit">Login</button>
-      </form>
+    <div className="h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-96 text-center">
+        <h1 className="text-xl font-bold mb-4">Login</h1>
+        <p>Username: <strong>demoUser</strong></p>
+        <p>Password: <strong>demo</strong></p>
+        <p className="mt-4 text-sm text-gray-500">Redirecting to dashboard...</p>
+      </div>
     </div>
   );
-}
+};
 
-export default LoginPage;
+export default Login;
