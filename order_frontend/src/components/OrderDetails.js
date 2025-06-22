@@ -5,24 +5,38 @@ const OrderDetails = ({ id, onClose, onRefresh }) => {
   const [order, setOrder] = useState(null);
   const [edit, setEdit] = useState(false);
   const [form, setForm] = useState({});
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     api.getOrder(id).then((data) => {
       setOrder(data);
       setForm(data);
+    }).catch(() => {
+      setMessage("Order not found.");
     });
   }, [id]);
 
   const update = async () => {
-    await api.updateOrder(id, form);
-    setEdit(false);
-    onRefresh();
+    try {
+      await api.updateOrder(id, form);
+      setMessage("Order updated successfully!");
+      setEdit(false);
+      onRefresh();
+    } catch (err) {
+      setMessage("Failed to update order.");
+    }
+    setTimeout(() => setMessage(null), 3000);
   };
 
   if (!order) return null;
 
   return (
     <div className="bg-white p-4 rounded shadow">
+      {message && (
+        <div className="mb-2 p-2 bg-green-100 border border-green-400 rounded text-green-700">
+          {message}
+        </div>
+      )}
       {edit ? (
         <>
           {Object.keys(form).map(field => (
