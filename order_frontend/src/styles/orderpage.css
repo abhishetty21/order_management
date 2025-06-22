@@ -1,0 +1,39 @@
+.orders-page {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .orders-page input[type="text"] {
+    width: 300px;
+    padding: 8px;
+    margin: 15px 0;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+  }
+  
+  table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+  }
+  
+  .pagination {
+    text-align: center;
+  }
+  
+  .pagination button {
+    margin: 0 10px;
+    padding: 8px 12px;
+  }
+  
