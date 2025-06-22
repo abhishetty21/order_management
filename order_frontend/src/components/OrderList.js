@@ -1,20 +1,28 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import api from '../api/orders';
+import OrderDetails from './OrderDetails';
 
-function Input({ type = "text", placeholder, value, onChange, style = {} }) {
+const OrderList = ({ refresh }) => {
+  const [orders, setOrders] = useState([]);
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    api.getOrders().then(setOrders);
+  }, [refresh]);
+
   return (
-    <input
-      type={type}
-      placeholder={placeholder}
-      value={value}
-      onChange={onChange}
-      style={{
-        width: '100%',
-        padding: '10px',
-        marginBottom: '12px',
-        ...style
-      }}
-    />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        {orders.map(order => (
+          <div key={order.id} className="bg-gray-100 p-4 rounded shadow cursor-pointer" onClick={() => setSelected(order.id)}>
+            <p><strong>{order.item_name}</strong> - {order.name}</p>
+            <p className="text-sm text-gray-500">Status: {order.status}</p>
+          </div>
+        ))}
+      </div>
+      {selected && <OrderDetails id={selected} onClose={() => setSelected(null)} onRefresh={refresh} />}
+    </div>
   );
-}
+};
 
-export default Input;
+export default OrderList;
