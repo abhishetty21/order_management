@@ -19,16 +19,29 @@ const Dashboard = () => {
     fetchOrders();
   }, [refresh]);
 
-  // Search handler
+  // ✅ FIX: prevent 422 when search is empty
   const handleSearch = async (query) => {
-    const result = await api.searchOrders(query);
-    setOrders(result);
+    if (!query.trim()) {
+      fetchOrders();  // reset to full list
+      return;
+    }
+
+    try {
+      const result = await api.searchOrders(query);
+      setOrders(result);
+    } catch (err) {
+      console.error("Search error:", err.response?.data || err.message);
+    }
   };
 
   // Filter handler
   const handleFilter = async (status) => {
-    const result = await api.filterOrders(status);
-    setOrders(result);
+    try {
+      const result = await api.filterOrders(status);
+      setOrders(result);
+    } catch (err) {
+      console.error("Filter error:", err.response?.data || err.message);
+    }
   };
 
   return (
