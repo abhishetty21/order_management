@@ -15,9 +15,14 @@ RUN npm run build
 
 # Serve with Nginx
 FROM nginx:alpine
+
+# Copy built app
 COPY --from=build /app/build /usr/share/nginx/html
 
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/nginx.conf
+
 # Expose frontend port
-EXPOSE 80
+EXPOSE 3000
 
 CMD ["nginx", "-g", "daemon off;"]

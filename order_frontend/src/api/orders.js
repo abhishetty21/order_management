@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE = 'http://127.0.0.1:8000/orders';
+// Use environment variable or fallback to localhost
+const BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+const BASE = `${BASE_URL}/orders`;
 
 const api = {
   getOrders: async () => (await axios.get(BASE)).data,
