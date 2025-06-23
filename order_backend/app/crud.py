@@ -26,11 +26,12 @@ def update_order(db: Session, order_id: int, updates: schemas.OrderUpdate):
 
 def search_orders(db: Session, query: str):
     return db.query(models.Order).filter(
-        (models.Order.name.contains(query)) |
-        (models.Order.mobile.contains(query)) |
-        (models.Order.item_name.contains(query)) |
-        (models.Order.count_or_weight.contains(query))
+        models.Order.name.ilike(f"%{query}%") |
+        models.Order.mobile.ilike(f"%{query}%") |
+        models.Order.item_name.ilike(f"%{query}%") |
+        models.Order.count_or_weight.ilike(f"%{query}%")
     ).all()
+
 
 def filter_orders_by_status(db: Session, status: str):
     return db.query(models.Order).filter(models.Order.status == status).all()
