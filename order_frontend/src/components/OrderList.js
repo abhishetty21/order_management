@@ -8,12 +8,12 @@ const OrderList = () => {
   const [refreshFlag, setRefreshFlag] = useState(false); // ✅ trigger re-fetch
 
   const fetchOrders = async () => {
-    const data = await api.getOrders();
+    const data = await api.getOrders(1000);
     setOrders(data);
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(1000);
   }, [refreshFlag]); // ✅ whenever refreshFlag changes, reload orders
 
   return (

@@ -11,7 +11,7 @@ const Dashboard = () => {
 
   // Load all orders
   const fetchOrders = async () => {
-    const data = await api.getOrders();
+    const data = await api.getOrders(1000);  // fetch more if needed
     setOrders(data);
   };
 
@@ -19,27 +19,24 @@ const Dashboard = () => {
     fetchOrders();
   }, [refresh]);
 
-  // Search by name, mobile, item name, count/weight
+  // Search handler
   const handleSearch = async (query) => {
     const result = await api.searchOrders(query);
     setOrders(result);
   };
 
-  // Filter by status (Pending, Processing, Delivered, Canceled)
+  // Filter handler
   const handleFilter = async (status) => {
     const result = await api.filterOrders(status);
-    setOrders(result); // ✅ updates list
+    setOrders(result);
   };
-  
-  <SearchFilter onSearch={handleSearch} onFilter={handleFilter} />
-  
 
   return (
     <div className="p-4 max-w-5xl mx-auto">
       <Header />
-      <OrderForm onRefresh={() => setRefresh(!refresh)} />
+      <OrderForm onRefresh={() => setRefresh(prev => !prev)} />
       <SearchFilter onSearch={handleSearch} onFilter={handleFilter} />
-      <OrderList orders={orders} onRefresh={() => setRefresh(!refresh)} />
+      <OrderList orders={orders} onRefresh={() => setRefresh(prev => !prev)} />
     </div>
   );
 };
